@@ -137,23 +137,23 @@ const projects: Project[] = [
     imageUrl: "/portfolio.png",
     stats: { stars: 0, users: "Developers & Recruiters", date: "2025" },
   },
-  // {
-  //   id: "applevision",
-  //   title: "🍎 Apple Vision – Product Landing Page Clone",
-  //   description: [
-  //     "Visually striking front-end project replicating the Apple Vision Pro landing experience.",
-  //     "GSAP-powered scroll-based transitions and parallax effects.",
-  //     "Pixel-perfect layout with immersive visuals and hardware showcases.",
-  //     "Responsive design for desktop and mobile.",
-  //     "Practice project for modern web animation and layout structuring.",
-  //     "Demonstrates advanced front-end techniques and design-first thinking.",
-  //   ],
-  //   technologies: ["HTML", "CSS", "JavaScript", "GSAP"],
-  //   liveUrl: "https://architagarwal04.github.io/Apple-Vision/",
-  //   githubUrl: "https://github.com/ArchitAgarwal04/Apple-Vision",
-  //   imageUrl: "/visionpro.png",
-  //   stats: { stars: 0, users: "Frontend Enthusiasts", date: "2023" },
-  // },
+  {
+    id: "applevision",
+    title: "☁️ Weather Forecast App – Real-time Weather Updates",
+    description: [
+      "A modern weather forecasting web app with real-time data fetching.",
+      "Displays current weather, temperature, humidity, and wind speed for any location.",
+      "Features dynamic background changes based on weather conditions (e.g., sunny, rainy)",
+      "Responsive design for desktop and mobile.",
+      "Integrates with a weather API for live data updates.",
+      "Built to demonstrate API integration, DOM manipulation, and responsive design skills.",
+    ],
+    technologies: ["HTML", "CSS", "JavaScript", "OpenWeatherMap API"],
+    liveUrl: "https://architagarwal04.github.io/Apple-Vision/",
+    githubUrl: "https://github.com/ArchitAgarwal04/Apple-Vision",
+    imageUrl: "/visionpro.png",
+    stats: { stars: 0, users: "Web Developers & Learners", date: "2024" },
+  },
 ];
 
 // Sort projects from latest to oldest by date (descending)
