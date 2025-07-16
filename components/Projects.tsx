@@ -151,7 +151,7 @@ const projects: Project[] = [
     technologies: ["HTML", "CSS", "JavaScript", "OpenWeatherMap API"],
     liveUrl: "https://architagarwal04.github.io/Apple-Vision/",
     githubUrl: "https://github.com/ArchitAgarwal04/Apple-Vision",
-    imageUrl: "/visionpro.png",
+    imageUrl: "/dashboard.png",
     stats: { stars: 0, users: "Web Developers & Learners", date: "2024" },
   },
 ];
