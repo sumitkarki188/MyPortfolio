@@ -6,7 +6,7 @@ A personal portfolio website showcasing my skills, projects, and contact informa
 
 ## 🌐 Live Site
 
-👉 [Visit Portfolio](https://sumitportfolio18.netlify.app)
+👉 [Visit Portfolio](https://myportfolio-rd5s.onrender.com)
 
 ---
 
