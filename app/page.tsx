@@ -6,6 +6,7 @@ import Skills from '@/components/Skills';
 import Resume from '@/components/Resume';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
+import Certificates from '@/components/Certificate';
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <Hero />
       <About />
       <Projects />
+       <Certificates />
       <Skills />
       <Resume />
       <Contact />

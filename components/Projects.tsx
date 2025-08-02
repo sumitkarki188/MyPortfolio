@@ -154,6 +154,24 @@ const projects: Project[] = [
     imageUrl: "/dashboard.png",
     stats: { stars: 0, users: "Web Developers & Learners", date: "2024" },
   },
+  {
+  id: "fraud-detect",
+  title: "💳 Credit Card Fraud Detection – Machine Learning App",
+  description: [
+    "A machine learning-based web application that detects fraudulent credit card transactions.",
+    "Implements XGBoost and data preprocessing techniques to predict fraudulent behavior.",
+    "Interactive web UI built using Flask with real-time prediction on uploaded data.",
+    "Includes model training, scaler saving, and integration with a Python backend.",
+    "Clean project structure with separation of data, models, and interface logic.",
+    "Demonstrates practical implementation of ML pipeline and web deployment.",
+  ],
+  technologies: ["Python", "Flask", "XGBoost", "Pandas", "HTML", "CSS", "JavaScript"],
+  liveUrl: "https://credit-card-fraud-detection-m4dr.onrender.com/", 
+  githubUrl: "https://github.com/sumitkarki188/Fraud-Detection",
+  imageUrl: "/credit-card.png", // Change to your image path if available
+  stats: { stars: 0, users: "ML Learners & Web Developers", date: "2025" }
+}
+
 ];
 
 // Sort projects from latest to oldest by date (descending)

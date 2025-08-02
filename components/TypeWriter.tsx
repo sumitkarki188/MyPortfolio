@@ -1,52 +1,50 @@
 "use client";
-import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 interface TypeWriterProps {
   texts: string[];
   className?: string;
 }
 
-export function TypeWriter({ texts, className = '' }: TypeWriterProps) {
-  if (!texts || texts.length === 0) {
-    return <div>No texts provided</div>;
-  }
-  const [currentText, setCurrentText] = useState('');
+export function TypeWriter({ texts, className = "" }: TypeWriterProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    const text = texts[currentIndex];
+    const currentText = texts[currentIndex];
     let timeout: NodeJS.Timeout;
-    if (!isDeleting) {
-      if (currentText.length < text.length) {
-        timeout = setTimeout(() => {
-          setCurrentText(text.slice(0, currentText.length + 1));
-        }, 80);
-      } else {
-        timeout = setTimeout(() => setIsDeleting(true), 1000);
-      }
+
+    if (isDeleting) {
+      timeout = setTimeout(() => {
+        setDisplayText((prev) => prev.slice(0, -1));
+      }, 40);
     } else {
-      if (currentText.length > 0) {
-        timeout = setTimeout(() => {
-          setCurrentText(text.slice(0, currentText.length - 1));
-        }, 40);
-      } else {
-        setIsDeleting(false);
-        setCurrentIndex((prev) => (prev + 1) % texts.length);
-      }
+      timeout = setTimeout(() => {
+        setDisplayText((prev) => currentText.slice(0, prev.length + 1));
+      }, 80);
     }
+
+    // Switch states
+    if (!isDeleting && displayText === currentText) {
+      timeout = setTimeout(() => setIsDeleting(true), 1000);
+    } else if (isDeleting && displayText === "") {
+      setIsDeleting(false);
+      setCurrentIndex((prev) => (prev + 1) % texts.length);
+    }
+
     return () => clearTimeout(timeout);
-  }, [currentText, currentIndex, isDeleting, texts]);
+  }, [displayText, isDeleting, currentIndex, texts]);
 
   return (
     <div className={`min-h-[60px] flex items-center ${className}`}>
       <span className="relative">
-        {currentText}
+        {displayText}
         <motion.span
-          animate={{ opacity: [1, 1, 1] }}
-          transition={{ duration: 0.8, repeat: Infinity }}
-          className="inline-block w-1 h-8 bg-purple-400 ml-1"
+          animate={{ opacity: [1, 0, 1] }}
+          transition={{ duration: 1, repeat: Infinity }}
+          className="inline-block w-1 h-6 bg-purple-400 ml-1"
         />
       </span>
     </div>

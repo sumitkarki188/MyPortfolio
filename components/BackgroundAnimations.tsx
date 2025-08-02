@@ -1,23 +1,31 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 
-export function ParticleBackground() {
+// Enhanced Particle Background with interactive elements
+export function EnhancedParticleBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>();
-  const STAR_COUNT = 70;
-  const STAR_SIZE = [1.5, 3.5];
-  const LINE_DISTANCE = 120;
-  const SPEED = 0.3;
+  const mouseRef = useRef({ x: 0, y: 0 });
+  const [isVisible, setIsVisible] = useState(true);
 
-  // Star type
-  type Star = {
+  const PARTICLE_COUNT = 100;
+  const PARTICLE_SIZE = [0.5, 2.5];
+  const CONNECTION_DISTANCE = 150;
+  const MOUSE_RADIUS = 200;
+  const SPEED = 0.4;
+
+  type Particle = {
     x: number;
     y: number;
     vx: number;
     vy: number;
     size: number;
+    opacity: number;
+    color: string;
+    originalVx: number;
+    originalVy: number;
   };
 
   useEffect(() => {
@@ -31,6 +39,39 @@ export function ParticleBackground() {
     canvas.width = width;
     canvas.height = height;
 
+    // Colors for particles
+    const colors = [
+      '#a78bfa', // purple-400
+      '#60a5fa', // blue-400
+      '#34d399', // emerald-400
+      '#f472b6', // pink-400
+      '#fbbf24', // amber-400
+    ];
+
+    // Create particles
+    const particles: Particle[] = Array.from({ length: PARTICLE_COUNT }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * SPEED,
+      vy: (Math.random() - 0.5) * SPEED,
+      size: Math.random() * (PARTICLE_SIZE[1] - PARTICLE_SIZE[0]) + PARTICLE_SIZE[0],
+      opacity: Math.random() * 0.6 + 0.4,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      originalVx: 0,
+      originalVy: 0,
+    }));
+
+    // Store original velocities
+    particles.forEach(particle => {
+      particle.originalVx = particle.vx;
+      particle.originalVy = particle.vy;
+    });
+
+    // Mouse move handler
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseRef.current = { x: e.clientX, y: e.clientY };
+    };
+
     // Handle resize
     const handleResize = () => {
       width = window.innerWidth;
@@ -38,71 +79,109 @@ export function ParticleBackground() {
       canvas.width = width;
       canvas.height = height;
     };
-    window.addEventListener('resize', handleResize);
 
-    // Create stars
-    const stars: Star[] = Array.from({ length: STAR_COUNT }, () => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      vx: (Math.random() - 0.5) * SPEED,
-      vy: (Math.random() - 0.5) * SPEED,
-      size: Math.random() * (STAR_SIZE[1] - STAR_SIZE[0]) + STAR_SIZE[0],
-    }));
+    // Visibility change handler
+    const handleVisibilityChange = () => {
+      setIsVisible(!document.hidden);
+    };
+
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     function draw() {
       if (!ctx) return;
       ctx.clearRect(0, 0, width, height);
-      // Draw lines
-      for (let i = 0; i < stars.length; i++) {
-        for (let j = i + 1; j < stars.length; j++) {
-          const dx = stars[i].x - stars[j].x;
-          const dy = stars[i].y - stars[j].y;
+
+      // Draw connections
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < LINE_DISTANCE) {
+          
+          if (dist < CONNECTION_DISTANCE) {
             ctx.save();
-            ctx.globalAlpha = 0.15 + 0.25 * (1 - dist / LINE_DISTANCE);
-            ctx.strokeStyle = '#a78bfa'; // purple-400
-            ctx.lineWidth = 1.1;
+            const opacity = (1 - dist / CONNECTION_DISTANCE) * 0.3;
+            ctx.globalAlpha = opacity;
+            ctx.strokeStyle = particles[i].color;
+            ctx.lineWidth = 0.8;
             ctx.beginPath();
-            ctx.moveTo(stars[i].x, stars[i].y);
-            ctx.lineTo(stars[j].x, stars[j].y);
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
             ctx.stroke();
             ctx.restore();
           }
         }
       }
-      // Draw stars
-      for (const star of stars) {
+
+      // Draw particles
+      particles.forEach(particle => {
         ctx.save();
-        ctx.globalAlpha = 0.7;
+        ctx.globalAlpha = particle.opacity;
         ctx.beginPath();
-        ctx.arc(star.x, star.y, star.size, 0, 2 * Math.PI);
-        ctx.fillStyle = 'white';
-        ctx.shadowColor = '#a78bfa';
-        ctx.shadowBlur = 8;
+        ctx.arc(particle.x, particle.y, particle.size, 0, 2 * Math.PI);
+        ctx.fillStyle = particle.color;
+        ctx.shadowColor = particle.color;
+        ctx.shadowBlur = 10;
         ctx.fill();
         ctx.restore();
-      }
+      });
     }
 
     function animate() {
-      for (const star of stars) {
-        star.x += star.vx;
-        star.y += star.vy;
-        // Bounce off edges
-        if (star.x < 0 || star.x > width) star.vx *= -1;
-        if (star.y < 0 || star.y > height) star.vy *= -1;
+      if (!isVisible) {
+        animationRef.current = requestAnimationFrame(animate);
+        return;
       }
+
+      particles.forEach(particle => {
+        // Mouse interaction
+        const dx = mouseRef.current.x - particle.x;
+        const dy = mouseRef.current.y - particle.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < MOUSE_RADIUS) {
+          const force = (MOUSE_RADIUS - dist) / MOUSE_RADIUS;
+          particle.vx += (dx / dist) * force * 0.01;
+          particle.vy += (dy / dist) * force * 0.01;
+        } else {
+          // Return to original velocity
+          particle.vx += (particle.originalVx - particle.vx) * 0.02;
+          particle.vy += (particle.originalVy - particle.vy) * 0.02;
+        }
+
+        // Update position
+        particle.x += particle.vx;
+        particle.y += particle.vy;
+
+        // Bounce off edges
+        if (particle.x < 0 || particle.x > width) {
+          particle.vx *= -1;
+          particle.originalVx *= -1;
+        }
+        if (particle.y < 0 || particle.y > height) {
+          particle.vy *= -1;
+          particle.originalVy *= -1;
+        }
+
+        // Pulsating effect
+        particle.opacity = 0.4 + 0.4 * Math.sin(Date.now() * 0.002 + particle.x * 0.01);
+      });
+
       draw();
       animationRef.current = requestAnimationFrame(animate);
     }
+
     animate();
 
     return () => {
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
-  }, []);
+  }, [isVisible]);
 
   return (
     <canvas
@@ -113,25 +192,23 @@ export function ParticleBackground() {
   );
 }
 
-export function FloatingShapes() {
-  const shapes = Array.from({ length: 8 }, (_, i) => ({
+// Advanced Floating Shapes with morphing effects
+export function MorphingShapes() {
+  const shapes = Array.from({ length: 6 }, (_, i) => ({
     id: i,
-    size: Math.random() * 150 + 80,
+    size: Math.random() * 200 + 100,
     x: Math.random() * 100,
     y: Math.random() * 100,
-    duration: Math.random() * 15 + 8,
+    duration: Math.random() * 20 + 15,
+    delay: Math.random() * 5,
   }));
-
-  console.log('FloatingShapes: Rendering', shapes.length, 'shapes');
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-      {/* Test element to verify rendering */}
-      <div className="absolute top-4 right-4 w-4 h-4 bg-green-500 rounded-full z-50"></div>
       {shapes.map((shape) => (
         <motion.div
           key={shape.id}
-          className="absolute rounded-full bg-gradient-to-br from-purple-500/40 to-blue-500/40 blur-xl"
+          className="absolute rounded-full bg-gradient-to-br from-purple-500/20 via-blue-500/20 to-pink-500/20 blur-2xl"
           style={{
             width: shape.size,
             height: shape.size,
@@ -139,13 +216,15 @@ export function FloatingShapes() {
             top: `${shape.y}%`,
           }}
           animate={{
-            x: [0, 100, -50, 0],
-            y: [0, -100, 50, 0],
-            scale: [1, 1.3, 0.7, 1],
-            rotate: [0, 180, 360],
+            x: [0, 150, -100, 50, 0],
+            y: [0, -80, 120, -50, 0],
+            scale: [1, 1.5, 0.8, 1.2, 1],
+            rotate: [0, 90, 180, 270, 360],
+            borderRadius: ['50%', '30%', '50%', '40%', '50%'],
           }}
           transition={{
             duration: shape.duration,
+            delay: shape.delay,
             repeat: Infinity,
             ease: "easeInOut",
           }}
@@ -155,14 +234,116 @@ export function FloatingShapes() {
   );
 }
 
-export function GridBackground() {
+// Animated Grid with wave effect
+export function AnimatedGrid() {
   return (
-    <div className="absolute inset-0 grid-pattern opacity-30 z-0" />
+    <div className="absolute inset-0 opacity-10 z-0">
+      <motion.div
+        className="w-full h-full"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(167, 139, 250, 0.3) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(167, 139, 250, 0.3) 1px, transparent 1px)
+          `,
+          backgroundSize: '50px 50px',
+        }}
+        animate={{
+          backgroundPosition: ['0px 0px', '50px 50px'],
+        }}
+        transition={{
+          duration: 20,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+      />
+    </div>
   );
 }
 
-export function MeshGradient() {
+// Glowing Orbs with trailing effect
+export function GlowingOrbs() {
+  const orbs = Array.from({ length: 4 }, (_, i) => ({
+    id: i,
+    size: Math.random() * 80 + 60,
+    duration: Math.random() * 25 + 20,
+    delay: i * 2,
+  }));
+
   return (
-    <div className="absolute inset-0 mesh-gradient opacity-50 z-0" />
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+      {orbs.map((orb) => (
+        <motion.div
+          key={orb.id}
+          className="absolute rounded-full bg-gradient-radial from-purple-400/30 via-blue-400/20 to-transparent"
+          style={{
+            width: orb.size,
+            height: orb.size,
+            filter: 'blur(2px)',
+          }}
+          animate={{
+            x: ['-10%', '110%'],
+            y: [
+              `${Math.random() * 20 + 10}%`,
+              `${Math.random() * 20 + 30}%`,
+              `${Math.random() * 20 + 50}%`,
+              `${Math.random() * 20 + 70}%`,
+            ],
+            opacity: [0, 1, 1, 0],
+          }}
+          transition={{
+            duration: orb.duration,
+            delay: orb.delay,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+    </div>
   );
 }
+
+// Radial Gradient with pulsing effect
+export function PulsingRadialGradient() {
+  return (
+    <motion.div
+      className="absolute inset-0 z-0"
+      style={{
+        background: `
+          radial-gradient(circle at 25% 25%, rgba(167, 139, 250, 0.15) 0%, transparent 50%),
+          radial-gradient(circle at 75% 75%, rgba(96, 165, 250, 0.15) 0%, transparent 50%),
+          radial-gradient(circle at 50% 50%, rgba(244, 114, 182, 0.1) 0%, transparent 70%)
+        `,
+      }}
+      animate={{
+        opacity: [0.5, 0.8, 0.5],
+        scale: [1, 1.1, 1],
+      }}
+      transition={{
+        duration: 8,
+        repeat: Infinity,
+        ease: "easeInOut",
+      }}
+    />
+  );
+}
+
+// Combined Background Animation
+export function AttractiveBackground() {
+  return (
+    <div className="fixed inset-0 w-full h-full overflow-hidden">
+      <PulsingRadialGradient />
+      <AnimatedGrid />
+      <MorphingShapes />
+      <GlowingOrbs />
+      <EnhancedParticleBackground />
+    </div>
+  );
+}
+
+// Individual exports for flexibility
+export {
+  EnhancedParticleBackground as ParticleBackground,
+  MorphingShapes as FloatingShapes,
+  AnimatedGrid as GridBackground,
+  PulsingRadialGradient as MeshGradient,
+};
