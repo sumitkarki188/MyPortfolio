@@ -129,7 +129,7 @@ const projects = [
 
 export default function Resume() {
   // Google Drive file ID
-  const fileId = "17mAerIB8HNkBOxZIhLihHZnL4xqDXJum";
+  const fileId = "1T5x0vShiU6n1ngIrsjmCX8eLY1e_PCOi";
 
   // Direct‑download URL (forces download)
   const downloadURL = `https://drive.google.com/uc?export=download&id=${fileId}`;

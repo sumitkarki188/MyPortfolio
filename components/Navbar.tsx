@@ -8,7 +8,6 @@ const navItems = [
   { name: 'Home', href: '#hero', icon: Home },
   { name: 'About', href: '#about', icon: User },
   { name: 'Projects', href: '#projects', icon: Briefcase },
-  { name: ' AppWindowMacs', href: '# AppWindowMacs', icon:  AppWindowMac },
   { name: 'Skills', href: '#skills', icon: Award },
   { name: 'Resume', href: '#resume', icon: FileText },
   { name: 'Contact', href: '#contact', icon: Mail },

@@ -4,6 +4,7 @@ import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 
 import { ContactFormData } from '@/types';
 
@@ -36,6 +37,12 @@ export default function Contact() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const formRef = useRef<HTMLFormElement>(null);
+
+  // EmailJS configuration - Your actual IDs
+  const EMAILJS_SERVICE_ID = 'service_5sh21c2';
+  const EMAILJS_TEMPLATE_ID = 'template_72kg3sh';
+  const EMAILJS_PUBLIC_KEY = 'nU4XFvuMxf4ieCAQz';
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -47,22 +54,47 @@ export default function Contact() {
     setIsSubmitting(true);
     setSubmitStatus('idle');
     
-    // Simulate API call
     try {
-    await new Promise(resolve => setTimeout(resolve, 2000));
+      // Initialize EmailJS with your public key
+      emailjs.init(EMAILJS_PUBLIC_KEY);
+      
+      // Send email using EmailJS with template parameters
+      const templateParams = {
+        user_name: formData.name,
+        user_email: formData.email,
+        message: formData.message,
+        to_email: 'sumitkarki1114@gmail.com'
+      };
+      
+      const result = await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams,
+        EMAILJS_PUBLIC_KEY
+      );
+
+      console.log('Email sent successfully:', result.text);
       setSubmitStatus('success');
-    setFormData({ name: '', email: '', message: '' });
-    } catch (error) {
+      setFormData({ name: '', email: '', message: '' });
+      
+      // Auto-hide success message after 5 seconds
+      setTimeout(() => setSubmitStatus('idle'), 5000);
+      
+    } catch (error: any) {
+      console.error('Email sending failed:', error);
       setSubmitStatus('error');
+      
+      // Auto-hide error message after 5 seconds
+      setTimeout(() => setSubmitStatus('idle'), 5000);
     } finally {
-    setIsSubmitting(false);
+      setIsSubmitting(false);
     }
   };
 
   return (
     <section id="contact" className="min-h-screen py-20 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-transparent to-purple-900/20" />
-      {/* ContactCube removed as it requires onActivate prop */}
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -107,11 +139,11 @@ export default function Contact() {
                   >
                     <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                       <info.icon className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
+                    </div>
+                    <div>
                       <h4 className="text-lg font-semibold text-white">{info.title}</h4>
                       <p className="text-white/70">{info.value}</p>
-                  </div>
+                    </div>
                   </motion.a>
                 ))}
               </div>
@@ -128,26 +160,26 @@ export default function Contact() {
           >
             <h3 className="text-2xl md:text-3xl font-bold mb-6 gradient-text">Send Message</h3>
               
-              <form onSubmit={handleSubmit} className="space-y-6">
+            <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.5, delay: 0.5 }}
               >
-                <label htmlFor="name" className="block text-sm font-medium text-white mb-2">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
+                <label htmlFor="user_name" className="block text-sm font-medium text-white mb-2">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="user_name"
+                  name="name"
+                  value={formData.name}
                   onChange={handleInputChange}
-                    required
+                  required
                   className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
-                    placeholder="Your name"
-                  />
+                  placeholder="Your name"
+                />
               </motion.div>
                 
               <motion.div
@@ -156,19 +188,19 @@ export default function Contact() {
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.5, delay: 0.6 }}
               >
-                <label htmlFor="email" className="block text-sm font-medium text-white mb-2">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
+                <label htmlFor="user_email" className="block text-sm font-medium text-white mb-2">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="user_email"
+                  name="email"
+                  value={formData.email}
                   onChange={handleInputChange}
-                    required
+                  required
                   className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
-                    placeholder="your.email@example.com"
-                  />
+                  placeholder="your.email@example.com"
+                />
               </motion.div>
                 
               <motion.div
@@ -178,18 +210,18 @@ export default function Contact() {
                 transition={{ duration: 0.5, delay: 0.7 }}
               >
                 <label htmlFor="message" className="block text-sm font-medium text-white mb-2">
-                    Message
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
+                  Message
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
                   onChange={handleInputChange}
-                    required
-                    rows={5}
+                  required
+                  rows={5}
                   className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 resize-none"
                   placeholder="Tell me about your project or just say hello!"
-                  />
+                />
               </motion.div>
                 
               <motion.div
@@ -201,9 +233,9 @@ export default function Contact() {
                 <motion.button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full btn-primary group"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  className="w-full btn-primary group disabled:opacity-50 disabled:cursor-not-allowed"
+                  whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
+                  whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
                 >
                   <Send className="mr-2 w-5 h-5" />
                   <span className="text-sm md:text-base">
@@ -217,24 +249,26 @@ export default function Contact() {
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="flex items-center space-x-2 text-green-400 bg-green-400/10 p-3 rounded-lg"
+                  exit={{ opacity: 0, y: -10 }}
+                  className="flex items-center space-x-2 text-green-400 bg-green-400/10 p-3 rounded-lg border border-green-400/20"
                 >
-                  <CheckCircle className="w-5 h-5" />
-                  <span>Message sent successfully!</span>
+                  <CheckCircle className="w-5 h-5 flex-shrink-0" />
+                  <span>Message sent successfully! I'll get back to you soon.</span>
                 </motion.div>
               )}
 
               {submitStatus === 'error' && (
-                      <motion.div
+                <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="flex items-center space-x-2 text-red-400 bg-red-400/10 p-3 rounded-lg"
+                  exit={{ opacity: 0, y: -10 }}
+                  className="flex items-center space-x-2 text-red-400 bg-red-400/10 p-3 rounded-lg border border-red-400/20"
                 >
-                  <AlertCircle className="w-5 h-5" />
-                  <span>Failed to send message. Please try again.</span>
+                  <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                  <span>Failed to send message. Please try again or contact me directly at sumitkarki1114@gmail.com</span>
                 </motion.div>
               )}
-              </form>
+            </form>
           </motion.div>
         </div>
       </div>

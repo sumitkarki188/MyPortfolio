@@ -170,7 +170,41 @@ const projects: Project[] = [
   githubUrl: "https://github.com/sumitkarki188/Fraud-Detection",
   imageUrl: "/credit-card.png", // Change to your image path if available
   stats: { stars: 0, users: "ML Learners & Web Developers", date: "2025" }
-}
+},
+{
+  id: " MammoGuard",
+  title: "💳 Breast Cancer Prediction – Machine Learning Model",
+  description: [
+    "",
+    " Created a machine learning model to predict the likelihood of breast cancer from medical data, improving early detection accuracy.",
+    " Trained and optimized a logistic regression, Random Forest and Decision Tree model to classify whether a tumor is  malignant or benign with over 97% accuracy.",
+    "Interactive web UI built using Flask with real-time prediction on uploaded data.",
+    "Includes model training, scaler saving, and integration with a Python backend.",
+  ],
+  technologies: ["Python", " Scikit-Learn","numpy", "Pandas", "HTML", "CSS", "JavaScript"],
+  liveUrl: "https://breast-cancer-predection.onrender.com/", 
+  githubUrl: "https://github.com/sumitkarki188/Breast-Cancer-Predection",
+  imageUrl: "/breast-cancer.png", 
+  stats: { stars: 0, users: "", date: "2025" }
+},
+ {
+    id: "pathfinding",
+    title: " Interactive Pathfinding Simulator ",
+    description: [
+  "🏗️ Built an educational web app to compare 5 popular pathfinding algorithms (Dijkstra, A*, BFS, DFS, Greedy Best-First Search).",
+  "🖥️ Provides real-time visualization on interactive grids with obstacles and weights.",
+  "🎮 Users can place walls, set start/end nodes, and watch algorithms race side by side.",
+  "📊 Demonstrates algorithm efficiency in terms of explored nodes and shortest path found.",
+  "⚡ Developed with JavaScript, HTML, CSS, and optimized data structures for performance.",
+  "🚀 Deployed using Render with version control managed on GitHub."
+],
+
+    technologies: ["Javascript", "html", "Css","Data Structures"],
+    liveUrl: "https://pathfinder-e83w.onrender.com/", 
+    githubUrl: "https://github.com/sumitkarki188/PathFinder",
+    imageUrl: "/path-finder.png",
+    stats: { stars: 0, users: "Individual", date: "2025" },
+  },
 
 ];
 
