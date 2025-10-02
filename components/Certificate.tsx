@@ -145,6 +145,70 @@ const certificates: Certificate[] = [
     ],
     featured: false,
   },
+  {
+  id: "oracle-devops",
+  title: "💻 DevOps Professional",
+  issuer: "Oracle",
+  date: "2025",
+  description: [
+    "Gained expertise in continuous integration and continuous deployment (CI/CD) pipelines.",
+    "Worked with containerization and orchestration using Docker and Kubernetes.",
+    "Learned infrastructure as code (IaC) with tools like Terraform and Ansible.",
+    "Applied monitoring, logging, and version control best practices for modern DevOps workflows.",
+  ],
+  imageUrl: "/devops.png",
+  viewUrl: "certificates/devops_oracle.pdf",
+  skills: [
+    "Docker",
+    "Kubernetes",
+    "Linux",
+    "Git",
+    "Cloud Platforms",
+  ],
+  featured: true,
+},
+ {
+  id: "young_turk-naukri.com",
+  title: "🏆 Naukri Campus Young Turks 2025 Participant",
+  issuer: "Naukri.com",
+  date: "2025",
+ description: [
+  "Participated in Naukri Campus Young Turks 2025, India’s largest undergraduate skill assessment competition.",
+  "Secured an All India Rank of #10684 among lakhs of participants across multiple domains.",
+  "Demonstrated strong aptitude, problem-solving, and domain-specific skills in a national-level setting.",
+  "Gained valuable exposure to competitive assessments, enhancing preparedness for campus placements and industry challenges.",
+],
+  imageUrl: "/young_turk.png",
+  viewUrl: "certificates/young_turk.pdf",
+  skills: [
+  "Problem Solving",
+  "Aptitude & Logical Reasoning",
+  "Competitive Programming",
+  "Data Structures & Algorithms",
+],
+  featured: true,
+},
+{
+  id: "adobe-india-hackathon-2025",
+  title: "💡 Adobe India Hackathon 2025 Participant",
+  issuer: "Adobe India",
+  date: "2025",
+ description: [
+ "Participated in Adobe India Hackathon 2025 – 'Connecting the Dots Challenge', focused on reimagining the PDF as an intelligent and interactive experience.",
+    "Collaborated in a team of 3 members from the same institute to design innovative solutions that enhance knowledge discovery and research workflows.",
+    "Cleared the Online MCQ Assessment + Coding round, involving algorithm, data structures, and problem-solving within a timed environment.",
+],
+  imageUrl: "/adobe_unstop.png",
+  viewUrl: "certificates/adobe_unstop.pdf",
+  skills: [
+    "Problem Solving",
+    "Data Structures & Algorithms",
+    "Team Collaboration",
+    "Hackathon Experience"
+  ],
+  featured: true,
+}
+
 ];
 
 // Sort certificates from latest to oldest by date (descending)

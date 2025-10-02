@@ -206,6 +206,23 @@ const projects: Project[] = [
     stats: { stars: 0, users: "Individual", date: "2025" },
   },
 
+  {
+    id: "online judge",
+    title: "Problem Solver ",
+    description: [
+    "🏗️ Built an online coding platform similar to LeetCode for solving programming problems and competitive coding practice.",
+    "💻 Features secure code execution engine supporting multiple programming languages with automated testing.",
+    "⚖️ Integrated automated judge system with instant feedback and detailed solution statistics.",
+    "🏆 Used SQL as a database to update questions , test cases and constraints.",
+    "🚀 Deployed with scalable architecture handling concurrent submissions and real-time code evaluation."
+],
+
+    technologies: ["Javascript", "html", "Css","SQL","React js"],
+    githubUrl: "https://github.com/sumitkarki188/-CodeMaster",
+    imageUrl: "/code-master.png",
+    stats: { stars: 0, users: "Individual", date: "2025" },
+  },
+
 ];
 
 // Sort projects from latest to oldest by date (descending)
