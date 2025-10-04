@@ -222,6 +222,27 @@ const projects: Project[] = [
     imageUrl: "/code-master.png",
     stats: { stars: 0, users: "Individual", date: "2025" },
   },
+  {
+  "id": "cpu-scheduler",
+  "title": "CPU Scheduling Visualizer",
+  "description": [
+    "🖥️ Built an interactive CPU scheduling visualizer to demonstrate how different CPU scheduling algorithms allocate CPU time to processes.",
+    "📊 Implemented FCFS, SJF (non-preemptive), SRTF (preemptive), and Round Robin (with configurable quantum) algorithms.",
+    "🎨 Developed an interactive Gantt chart and process table for real-time visualization of CPU scheduling.",
+    "⚡ Built with React.js and Vite for fast, responsive front-end performance.",
+    "🚀 Easy to run locally or deploy online for demonstrations and learning purposes."
+  ],
+  "technologies": ["JavaScript", "React.js", "CSS", "HTML", "Vite"],
+  "githubUrl": "https://github.com/sumitkarki188/Cpu-Scheuling-Visualizer",
+  liveUrl: "https://cpu-scheuling-visualizer-sk.vercel.app/", 
+  "imageUrl": "/cpu-schedule.png",
+  "stats": { 
+    "stars": 0, 
+    "users": "Individual", 
+    "date": "2025" 
+  }
+}
+
 
 ];
 
