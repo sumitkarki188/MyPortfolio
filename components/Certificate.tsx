@@ -206,7 +206,52 @@ const certificates: Certificate[] = [
     "Hackathon Experience"
   ],
   featured: true,
+},
+{
+  id: "google-cybersecurity-coursera",
+  title: "🛡️ Google Cybersecurity Professional Certificate",
+  issuer: "Google (Coursera)",
+  date: "2025",
+  description: [
+    "Completed the Google Cybersecurity Professional Certificate, gaining foundational knowledge in cybersecurity principles, risk management, and security operations.",
+    "Developed hands-on experience with security frameworks, network security concepts, Linux command line, SQL, and incident response fundamentals.",
+    "Applied analytical thinking to identify threats, analyze vulnerabilities, and support secure system design following industry best practices."
+  ],
+  imageUrl: "/google_cybersecurity.png",
+  viewUrl: "certificates/google_cybersecurity.pdf",
+  skills: [
+    "Cybersecurity Fundamentals",
+    "Network Security",
+    "Risk Management",
+    "Linux",
+    "SQL",
+    "Analytical Skills"
+  ],
+  featured: true
+},
+{
+  id: "sql-intermediate-hackerrank",
+  title: "🗄️ SQL (Intermediate) Certification",
+  issuer: "HackerRank",
+  date: "2025",
+  description: [
+    "Earned SQL (Intermediate) Certification by demonstrating proficiency in complex queries, joins, subqueries, aggregations, and data filtering.",
+    "Applied SQL concepts to analyze structured datasets, create test data, and support business requirements analysis.",
+    "Strengthened problem-solving skills by writing optimized queries under time constraints in an assessment-based environment."
+  ],
+  imageUrl: "/hackerrank_sql.png",
+  viewUrl: "certificates/sql_hackerrank.pdf",
+  skills: [
+    "SQL",
+    "Joins & Subqueries",
+    "Data Analysis",
+    "Query Optimization",
+    "Problem Solving"
+  ],
+  featured: false
 }
+
+
 
 ];
 
